@@ -7,9 +7,13 @@ import Cadastro from './screens/Cadastro';
 import Login from './screens/Login';
 import AreaLogada from './screens/AreaLogada';
 
+// importação teste para comunicação com o Firebase
+// import { app } from "./firebaseConfig";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  // Testando importação do firebase
+  // console.log(app);
 
   return (
     <SafeAreaView style={estilos.containerSafe}>
