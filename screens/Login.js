@@ -1,20 +1,56 @@
-import { Button, StyleSheet, TextInput, View } from 'react-native'
+import { useState } from 'react'
+import { Alert, Button, StyleSheet, TextInput, View } from 'react-native'
+
+// Importamos os recursos de autenticação através das configurações Firebase
+import { auth } from "../firebaseConfig";
+
+// Importamos as funções de autenticação diretamente da lib
+import { signInWithEmailAndPassword } from "firebase/auth"
 
 const Login = () => {
+
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+
+    const login = () =>{
+        // teste
+        // console.log(email, senha)
+        if(!email || !senha){
+            Alert.alert("Atenção!", "Você deve preencher todos os campos");
+            return; // parar o processo
+        }
+
+        // Faça isso primeiro                            faça isso em seguida
+        signInWithEmailAndPassword(auth, email, senha)
+        .then(()=>{
+            console.log("Usuário foi logado!");
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    
+    }
+
 
     return (
         <View style={estilos.container}>
             <View style={estilos.formulario}>
                 <TextInput
+                    onChangeText={valor => setEmail(valor)}
                     placeholder='E-mail'
                     style={estilos.input}
+                    // Para aceitar apenas email
+                    keyboardType="email-address"
                 />
                 <TextInput
+                    onChangeText={valor => setSenha(valor)}
                     placeholder='Senha'
                     style={estilos.input}
+                    // Propriedade booleana para senha
+                    secureTextEntry
                 />
                 <View style={estilos.botoes}>
-                    <Button title='Entre' color="green" />
+                    <Button title='Entre' color="green" onPress={login}/>
                 </View>
             </View>
         </View>
