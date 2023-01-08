@@ -19,7 +19,7 @@ export default function App() {
     <SafeAreaView style={estilos.containerSafe}>
       <StatusBar />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='inicial'>
+        <Stack.Navigator initialRouteName='Inicial'>
           <Stack.Screen name='Inicial' component={Inicial} options={{ headerShown: false }} />
           <Stack.Screen name='Login' component={Login} options={{
             title: 'Entre com suas credenciais',

@@ -7,7 +7,7 @@ import { auth } from "../firebaseConfig";
 // Importamos as funções de autenticação diretamente da lib
 import { signInWithEmailAndPassword } from "firebase/auth"
 
-const Login = () => {
+const Login = ( {navigation} ) => {
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
@@ -23,7 +23,7 @@ const Login = () => {
         // Faça isso primeiro                            faça isso em seguida
         signInWithEmailAndPassword(auth, email, senha)
         .then(()=>{
-            console.log("Usuário foi logado!");
+            navigation.replace("AreaLogada");
         })
         .catch(error => {
             console.log(error);

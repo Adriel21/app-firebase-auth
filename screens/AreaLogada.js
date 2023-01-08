@@ -1,12 +1,26 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
 
-const AreaLogada = () => {
+import { auth } from "../firebaseConfig";
+import { signOut } from "firebase/auth";
+
+const AreaLogada = ({navigation}) => {
+
+    const logout = () =>{
+        signOut(auth)
+        .then(() => {
+            // replace indica que de fato está ocorrendo uma substituição de tela. O navigate indica fluxo de navegação
+            navigation.replace("Inicial");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    };
 
     return (
         <View style={estilos.container}>
             <View style={estilos.topo}>
                 <Text style={estilos.bemVindo}>Bem-vindo(a)</Text>
-                <Button title='Logout' color="#D35400" />
+                <Button title='Logout' color="#D35400" onPress={() => logout()}/>
             </View>
             <View style={estilos.geral}>
                 <Text>Você está na área logada.</Text>
