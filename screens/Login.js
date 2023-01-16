@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Alert, Button, StyleSheet, TextInput, View } from 'react-native'
+import { Alert, Button, StyleSheet, TextInput, Vibration, View } from 'react-native'
 
 // Importamos os recursos de autenticação através das configurações Firebase
 import { auth } from "../firebaseConfig";
 
 // Importamos as funções de autenticação diretamente da lib
-import { signInWithEmailAndPassword } from "firebase/auth"
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
 
 const Login = ( {navigation} ) => {
 
@@ -16,6 +16,7 @@ const Login = ( {navigation} ) => {
         // teste
         // console.log(email, senha)
         if(!email || !senha){
+            Vibration .vibrate();
             Alert.alert("Atenção!", "Você deve preencher todos os campos");
             return; // parar o processo
         }
@@ -26,9 +27,31 @@ const Login = ( {navigation} ) => {
             navigation.replace("AreaLogada");
         })
         .catch(error => {
-            console.log(error);
-        });
+         // console.log(error);
+        // console.log(error.code);
+        let mensagem;
+        switch (error.code) {
+          case "auth/user-not-found":
+            mensagem = "Usuário não encontrado!";
+            break;
+          case "auth/wrong-password":
+            mensagem = "Senha incorreta";
+            break;
+          default:
+            mensagem = "Houve um erro, tente novamente mais tarde";
+            break;
+        }
+        Alert.alert("Ops!", mensagem);
+      });
+  
     
+    }
+
+    const recuperarSenha = () => {
+        sendPasswordResetEmail(auth, email)
+            .then(()=>{
+                Alert.alert("Recuperar Senha", "Verifique sua caixa de entrada");
+            }).catch(error => console.log(error));
     }
 
 
@@ -51,6 +74,8 @@ const Login = ( {navigation} ) => {
                 />
                 <View style={estilos.botoes}>
                     <Button title='Entre' color="green" onPress={login}/>
+
+                    <Button title='Recuperar Senha' color="blue" onPress={recuperarSenha}/>
                 </View>
             </View>
         </View>
